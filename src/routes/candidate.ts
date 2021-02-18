@@ -23,12 +23,15 @@ import {
     setCandidateVerify,
     handleCandidateLoginVerify,
     handleCandidateLogin,
+    getCandidate,
 } from '../actions/candidate';
 
 const router = Router();
 
 // add new candidate
 router.post('/', fileHandler.single('resume'), addCandidateVerify, codeChecker('candidate'), addCandidate);
+
+router.get('/', authenticator('candidate'), getCandidate);
 
 //login
 router.post('/login', handleCandidateLoginVerify, codeChecker('candidate'), handleCandidateLogin);
@@ -38,7 +41,7 @@ router.get('/:cid/form/:formId', getFormVerify, getForm);
 
 router.get('/form/:hash', newGetFormVerify, newGetForm);
 
-router.use(authenticator);
+router.use(authenticator('user'));
 
 // set candidates data
 router.put('/:cid/form/:formId', setCandidateVerify, setCandidate);
