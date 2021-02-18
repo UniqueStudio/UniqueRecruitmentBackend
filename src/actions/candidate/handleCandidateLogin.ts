@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
 import { errorRes } from '@utils/errorRes';
@@ -16,7 +15,7 @@ export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
         if (!candidate) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const token = generateJWT({ id: candidate._id }, 604800);
+        const token = generateJWT({ id: candidate.phone }, 604800);
         res.json({ token, type: 'success' });
     } catch (error) {
         return next(error);
