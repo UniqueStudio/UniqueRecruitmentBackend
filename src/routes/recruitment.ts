@@ -17,7 +17,7 @@ const router = Router();
 // get title of pending recruitments
 router.get('/pending', getPendingTitles);
 
-router.use(authenticator);
+router.use(authenticator('user'));
 
 // launch a new recruitment
 router.post('/', launchRecruitmentVerify, codeChecker('user'), launchRecruitment);

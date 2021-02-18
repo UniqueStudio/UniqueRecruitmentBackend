@@ -9,7 +9,7 @@ const router = Router();
 // request for verification code
 router.get('/verification/candidate/:phone', sendCandidateCodeVerify, sendCandidateCode);
 
-router.use(authenticator);
+router.use(authenticator('user'));
 
 // request for verification code
 router.get('/verification/user', sendUserCode);

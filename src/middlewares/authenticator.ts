@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { errorRes } from '@utils/errorRes';
 import { verifyJWT } from '@utils/verifyJWT';
 
-export const authenticator = (req: Request, res: Response, next: NextFunction) => {
+export const authenticator = (type: 'user' | 'candidate'): RequestHandler => (req, res, next) => {
     if (req.method === 'OPTIONS') {
         return next();
     }
@@ -11,7 +11,11 @@ export const authenticator = (req: Request, res: Response, next: NextFunction) =
         return next(errorRes('No JWT provided!', 'warning'));
     }
     try {
-        res.locals.id = verifyJWT(jwt);
+        if (type === 'user') {
+            res.locals.id = verifyJWT(jwt);
+        } else {
+            res.locals.phone = verifyJWT(jwt);
+        }
         next();
     } catch (e) {
         return next(errorRes('JWT is invalid!', 'warning'));

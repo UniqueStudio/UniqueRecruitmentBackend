@@ -24,7 +24,7 @@ router.get('/qrCode/:key', handleScan);
 // login: password
 router.post('/login', handleLoginVerify, handleLogin);
 
-router.use(authenticator);
+router.use(authenticator('user'));
 
 // get one's info
 router.get('/', getInfo);
