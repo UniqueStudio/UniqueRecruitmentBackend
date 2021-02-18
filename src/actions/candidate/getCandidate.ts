@@ -35,7 +35,7 @@ export const getCandidate: RequestHandler = async (req, res, next) => {
                     title: item.title,
                     referrer: item.referrer,
                 };
-            }),
+            })[0],
             type: 'success',
         });
     } catch (error) {

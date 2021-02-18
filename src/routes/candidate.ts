@@ -24,6 +24,8 @@ import {
     handleCandidateLoginVerify,
     handleCandidateLogin,
     getCandidate,
+    updateCandidateVerify,
+    updateCandidate,
 } from '../actions/candidate';
 
 const router = Router();
@@ -32,6 +34,8 @@ const router = Router();
 router.post('/', fileHandler.single('resume'), addCandidateVerify, codeChecker('candidate'), addCandidate);
 
 router.get('/', authenticator('candidate'), getCandidate);
+
+router.put('/', fileHandler.single('resume'), updateCandidateVerify, updateCandidate);
 
 //login
 router.post('/login', handleCandidateLoginVerify, codeChecker('candidate'), handleCandidateLogin);
