@@ -21,12 +21,17 @@ import {
     newSetCandidateVerify,
     setCandidate,
     setCandidateVerify,
+    handleCandidateLoginVerify,
+    handleCandidateLogin,
 } from '../actions/candidate';
 
 const router = Router();
 
 // add new candidate
 router.post('/', fileHandler.single('resume'), addCandidateVerify, codeChecker('candidate'), addCandidate);
+
+//login
+router.post('/login', handleCandidateLoginVerify, codeChecker('candidate'), handleCandidateLogin);
 
 // generate form
 router.get('/:cid/form/:formId', getFormVerify, getForm);

@@ -11,3 +11,4 @@ export { allocateOne, allocateOneVerify } from './allocateOne';
 export { allocateAll, allocateAllVerify } from './allocateAll';
 export { newGetFormVerify, newGetForm } from './newGetForm';
 export { newSetCandidateVerify, newSetCandidate } from './newSetCandidate';
+export { handleCandidateLogin, handleCandidateLoginVerify } from './handleCandidateLogin';
