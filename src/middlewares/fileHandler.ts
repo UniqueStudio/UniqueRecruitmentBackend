@@ -6,11 +6,11 @@ const storage = multer.diskStorage({
     filename: (req: Request, file, cb) => {
         const filename = `${Date.now()} - ${file.originalname}`;
         cb(null, filename);
-    }
+    },
 });
 export const fileHandler = multer({
     storage,
     limits: {
-        fileSize: 104857600  // 100MB
-    }
+        fileSize: 104857600, // 100MB
+    },
 });

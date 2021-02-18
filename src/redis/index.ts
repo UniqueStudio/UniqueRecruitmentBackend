@@ -11,6 +11,6 @@ export const redisAsync = {
         const result = await redisAsync.get(query);
         await redisAsync.del(query);
         return result;
-    }
+    },
 };
 redisClient.on('error', logger.error);

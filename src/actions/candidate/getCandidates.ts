@@ -12,17 +12,17 @@ export const getCandidates: RequestHandler = async (req, res, next) => {
         }
         const user = await UserRepo.queryById(res.locals.id);
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         const { joinTime } = user;
         const query = JSON.parse(req.params.query);
         const { title } = query;
         if (compareTitle(joinTime, title) >= 0) {
-            return next(errorRes('You don\'t have permission to view this recruitment!', 'warning'));
+            return next(errorRes("You don't have permission to view this recruitment!", 'warning'));
         }
         const recruitment = await RecruitmentRepo.query({ title });
         if (recruitment.length === 0) {
-            return next({ type: 'warning', message: 'Recruitment doesn\'t exist!' });
+            return next({ type: 'warning', message: "Recruitment doesn't exist!" });
         }
         const data = await CandidateRepo.query(query);
         res.json({ data, type: 'success' });
@@ -32,9 +32,12 @@ export const getCandidates: RequestHandler = async (req, res, next) => {
 };
 
 export const getCandidateVerify = [
-    param('query').isJSON().withMessage('Query is invalid!')
+    param('query')
+        .isJSON()
+        .withMessage('Query is invalid!')
         .custom((query) => {
             const { title } = JSON.parse(query);
             return title.match(/\d{4}[ASC]/g);
-        }).withMessage('Title is invalid!')
+        })
+        .withMessage('Title is invalid!'),
 ];

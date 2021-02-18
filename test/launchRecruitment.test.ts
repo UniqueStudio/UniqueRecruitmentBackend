@@ -11,14 +11,14 @@ describe('POST /recruitment', () => {
         request(app)
             .post('/recruitment')
             .set({
-                Authorization: token
+                Authorization: token,
             })
             .send({
                 title: '2021C',
                 begin: `${Date.now()}`,
                 stop: `${Date.now() + 5000000}`,
                 end: `${Date.now() + 10000000}`,
-                code: '1234'
+                code: '1234',
             })
             .end((err, res) => {
                 console.log(JSON.parse(res.text));

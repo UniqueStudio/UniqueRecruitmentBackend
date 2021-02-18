@@ -14,7 +14,7 @@ interface Data {
     is_leader_in_dept: number[];
     gender: string;
     extattr: {
-        attrs: { name: string, value: string }[]
+        attrs: { name: string; value: string }[];
     };
     email: string;
     department: number[];
@@ -31,7 +31,7 @@ const parseUserInfo = (data: Data) => {
         gender,
         extattr,
         email: mail,
-        department
+        department,
     } = data;
     const isCaptain = isleader === 1 || is_leader_in_dept.includes(1);
     const groups = department.filter((i: number) => ID_TO_GROUP[i] !== undefined);
@@ -45,7 +45,7 @@ const parseUserInfo = (data: Data) => {
     const { attrs } = extattr;
     let joinTime;
     try {
-        joinTime = attrs.filter((attr: { name: string, value: string }) => attr.name === '加入时间')[0].value;
+        joinTime = attrs.filter((attr: { name: string; value: string }) => attr.name === '加入时间')[0].value;
     } catch (error) {
         throw new Error('Please set join time in WeChat first!');
     }
@@ -68,7 +68,7 @@ const parseUserInfo = (data: Data) => {
         isCaptain,
         isAdmin: false,
         gender: +gender,
-        group
+        group,
     };
 };
 

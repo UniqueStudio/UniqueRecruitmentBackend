@@ -39,8 +39,8 @@ task().then(() => logger.info(`Task started`));
                 group: 'web',
                 password: {
                     salt,
-                    hash
-                }
+                    hash,
+                },
             });
         }
     }

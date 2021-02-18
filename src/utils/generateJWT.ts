@@ -4,6 +4,6 @@ import { Payload } from '@config/types';
 
 export const generateJWT = (payload: Payload, expire: number) => {
     return jwt.sign(payload, secret, {
-        expiresIn: expire
+        expiresIn: expire,
     });
 };

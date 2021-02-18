@@ -13,7 +13,7 @@ export const setInfo: RequestHandler = async (req, res, next) => {
         const id = res.locals.id;
         const user = await UserRepo.queryById(id);
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         const { phone, mail, password } = req.body;
         if (password && typeof password === 'string') {
@@ -22,8 +22,8 @@ export const setInfo: RequestHandler = async (req, res, next) => {
             await UserRepo.updateById(id, {
                 password: {
                     salt,
-                    hash
-                }
+                    hash,
+                },
             });
         }
         await UserRepo.updateById(id, {

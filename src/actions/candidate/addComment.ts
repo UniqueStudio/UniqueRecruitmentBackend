@@ -7,17 +7,17 @@ import { errorRes } from '@utils/errorRes';
 import { logger } from '@utils/logger';
 import { verifyJWT } from '@utils/verifyJWT';
 
-export const onAddComment = (socket: Socket) => async (req: { cid: string, comment: Comment, token: string }) => {
+export const onAddComment = (socket: Socket) => async (req: { cid: string; comment: Comment; token: string }) => {
     try {
         const { cid, comment, token } = req;
         const id = verifyJWT(token);
         const candidate = await CandidateRepo.queryById(cid);
         const user = await UserRepo.queryById(id);
         if (!candidate) {
-            return socket.emit('addCommentError', errorRes('Candidate doesn\'t exist!', 'warning'));
+            return socket.emit('addCommentError', errorRes("Candidate doesn't exist!", 'warning'));
         }
         if (!user) {
-            return socket.emit('addCommentError', errorRes('User doesn\'t exist!', 'warning'));
+            return socket.emit('addCommentError', errorRes("User doesn't exist!", 'warning'));
         }
         if (!comment) {
             return socket.emit('addCommentError', errorRes('No comment provided!', 'warning'));

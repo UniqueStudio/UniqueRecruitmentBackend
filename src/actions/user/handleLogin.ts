@@ -14,7 +14,7 @@ export const handleLogin: RequestHandler = async (req, res, next) => {
         const { phone, password } = req.body;
         const user = (await UserRepo.query({ phone }))[0];
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         if (!user.password) {
             return next(errorRes('Please set password first!', 'warning'));

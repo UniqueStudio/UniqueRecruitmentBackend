@@ -5,12 +5,15 @@ export const getQRCodeURL = `${QRCodeAPI}/qrConnect?appid=${APP_ID}&agentid=${AG
 export const scanningURL = `${QRCodeAPI}/l/qrConnect?key=`;
 const weChatAPI = 'https://qyapi.weixin.qq.com/cgi-bin';
 export const accessTokenURL = `${weChatAPI}/gettoken?corpid=${CORP_ID}&corpsecret=${CORP_SECRET}`;
-export const userIDURL = (accessToken: string, code: string) => `${weChatAPI}/user/getuserinfo?access_token=${accessToken}&code=${code}`;
-export const userInfoURL = (accessToken: string, uid: string) => `${weChatAPI}/user/get?access_token=${accessToken}&userid=${uid}`;
+export const userIDURL = (accessToken: string, code: string) =>
+    `${weChatAPI}/user/getuserinfo?access_token=${accessToken}&code=${code}`;
+export const userInfoURL = (accessToken: string, uid: string) =>
+    `${weChatAPI}/user/get?access_token=${accessToken}&userid=${uid}`;
 export const smsAPI = `https://open.hustunique.com/message/sms`;
 export const token = TOKEN!;
 export const formURL = 'https://join.hustunique.com';
-export const dbURI = `mongodb://mongodb:${DB_PORT}/recruitment`;
+// export const dbURI = `mongodb://mongodb:${DB_PORT}/recruitment`;
+export const dbURI = `mongodb://localhost:${DB_PORT}/recruitment`;
 // TODO: move this into open service
 export const shortenURLAPI = `https://v1.alapi.cn/api/url`;
 
@@ -51,7 +54,7 @@ export const Acm = {
     group: ACM_GROUP!,
     namespace: ACM_NAMESPACE!,
     accessKey: ACM_ACCESS_KEY!,
-    secretKey: ACM_SECRET_KEY!
+    secretKey: ACM_SECRET_KEY!,
 };
 
 export const ENV_DEV = 'development';

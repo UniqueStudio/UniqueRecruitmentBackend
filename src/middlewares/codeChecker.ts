@@ -12,14 +12,14 @@ export const codeChecker = (type: 'user' | 'candidate'): RequestHandler => async
             return next(errorRes('No validation code provided!', 'warning'));
         }
         if (type === 'user') {
-            if (code !== await redisAsync.getThenDel(`userCode:${id}`)) {
+            if (code !== (await redisAsync.getThenDel(`userCode:${id}`))) {
                 return next(errorRes('Validation code is incorrect!', 'warning'));
             }
         } else {
             if (!phone) {
                 return next(errorRes('No phone number provided!', 'warning'));
             }
-            if (code !== await redisAsync.getThenDel(`candidateCode:${phone}`)) {
+            if (code !== (await redisAsync.getThenDel(`candidateCode:${phone}`))) {
                 return next(errorRes('Validation code is incorrect!', 'warning'));
             }
         }

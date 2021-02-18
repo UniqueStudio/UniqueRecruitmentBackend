@@ -1,55 +1,32 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": ".",
-    "paths": {
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@database/*": [
-        "src/database/*"
-      ],
-      "@config/*": [
-        "src/config/*"
-      ],
-      "@mw/*": [
-        "src/middlewares/*"
-      ],
-      "@actions/*": [
-        "src/actions/*"
-      ]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "rootDir": ".",
+        "paths": {
+            "@utils/*": ["src/utils/*"],
+            "@database/*": ["src/database/*"],
+            "@config/*": ["src/config/*"],
+            "@mw/*": ["src/middlewares/*"],
+            "@actions/*": ["src/actions/*"]
+        },
+        "module": "commonjs",
+        "outDir": "build",
+        "target": "esnext",
+        "lib": ["esnext"],
+        "sourceMap": true,
+        "allowJs": true,
+        "moduleResolution": "node",
+        "typeRoots": ["node_modules/@types", "typings"],
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "experimentalDecorators": true
     },
-    "module": "commonjs",
-    "outDir": "build",
-    "target": "esnext",
-    "lib": [
-      "esnext"
-    ],
-    "sourceMap": true,
-    "allowJs": true,
-    "moduleResolution": "node",
-    "typeRoots": [
-      "node_modules/@types",
-      "typings"
-    ],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true
-  },
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "test",
-    "jest.config.js"
-  ]
+    "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "test", "jest.config.js"]
 }

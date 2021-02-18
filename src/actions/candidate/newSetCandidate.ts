@@ -22,7 +22,7 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
         if (!payload) {
             payload = (await PayloadRepo.query({ hash }))[0];
             if (!payload) {
-                return next(errorRes('Form doesn\'t exist!', 'warning'));
+                return next(errorRes("Form doesn't exist!", 'warning'));
             }
         }
         const { id: cid, recruitmentId, step } = payload;
@@ -31,9 +31,14 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
         }
         const candidate = await CandidateRepo.queryById(id);
         if (!candidate) {
-            return next(errorRes('Candidate doesn\'t exist!', 'warning'));
+            return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const { interviews: { group, team }, rejected, phone, name } = candidate;
+        const {
+            interviews: { group, team },
+            rejected,
+            phone,
+            name,
+        } = candidate;
         if (candidate.abandon) {
             return next(errorRes('You have already abandoned!', 'warning'));
         }
@@ -43,9 +48,9 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
         if (abandon) {
             await Promise.all([
                 CandidateRepo.updateById(id, {
-                    abandon
+                    abandon,
                 }),
-                redisAsync.del(`payload:${hash}`)
+                redisAsync.del(`payload:${hash}`),
             ]);
             return res.json({ type: 'success' });
         }
@@ -53,7 +58,7 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
             case 'group': {
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 if (recruitment.end < Date.now()) {
                     return next(errorRes('This recruitment has already ended!', 'warning'));
@@ -72,12 +77,14 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
                 ]);
                 res.json({ type: 'success' });
                 // {{1}你好，您当前状态是{2}，请关注手机短信以便获取后续通知。
-                sendSMS(phone, { template: 670908, param_list: [name, '成功选择组面时间'] }).catch((e) => logger.error(e));
+                sendSMS(phone, { template: 670908, param_list: [name, '成功选择组面时间'] }).catch((e) =>
+                    logger.error(e)
+                );
             }
             case 'team': {
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 if (recruitment.end < Date.now()) {
                     return next(errorRes('This recruitment has already ended!', 'warning'));
@@ -96,7 +103,9 @@ export const newSetCandidate: RequestHandler = async (req, res, next) => {
                 ]);
                 res.json({ type: 'success' });
                 // {1}你好，您当前状态是{2}，请关注手机短信以便获取后续通知。
-                sendSMS(phone, { template: 670908, param_list: [name, '成功选择群面时间'] }).catch((e) => logger.error(e));
+                sendSMS(phone, { template: 670908, param_list: [name, '成功选择群面时间'] }).catch((e) =>
+                    logger.error(e)
+                );
             }
             default: {
                 return next(errorRes('Failed to set!', 'warning'));

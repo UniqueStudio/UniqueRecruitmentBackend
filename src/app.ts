@@ -25,9 +25,14 @@ app.use(routes);
 
 app.use(errorHandler);
 
-export const server = isDev() ? http.createServer(app) : https.createServer({
-    key: fs.readFileSync('uniqcert.key'),
-    cert: fs.readFileSync('uniqcert.fullchain')
-}, app);
+export const server = isDev()
+    ? http.createServer(app)
+    : https.createServer(
+          {
+              key: fs.readFileSync('uniqcert.key'),
+              cert: fs.readFileSync('uniqcert.fullchain'),
+          },
+          app
+      );
 
 export const io = wsServer(server);

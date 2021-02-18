@@ -11,7 +11,7 @@ describe('GET /recruitment', () => {
         request(app)
             .get('/recruitment')
             .set({
-                Authorization: token
+                Authorization: token,
             })
             .end((err, res) => {
                 console.log(JSON.parse(res.text));

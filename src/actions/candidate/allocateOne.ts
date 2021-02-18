@@ -13,12 +13,12 @@ export const allocateOne: RequestHandler = async (req, res, next) => {
         const { time } = req.body;
         const candidate = await CandidateRepo.queryById(cid);
         if (!candidate) {
-            return next(errorRes('Candidate doesn\'t exist!', 'warning'));
+            return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
         const { title } = candidate;
         const recruitment = (await RecruitmentRepo.query({ title }))[0];
         if (!recruitment) {
-            return next(errorRes('Recruitment doesn\'t exist', 'warning'));
+            return next(errorRes("Recruitment doesn't exist", 'warning'));
         }
         if (recruitment.end < Date.now()) {
             return next(errorRes('This recruitment has already ended!', 'warning'));
@@ -31,7 +31,9 @@ export const allocateOne: RequestHandler = async (req, res, next) => {
 };
 
 export const allocateOneVerify = [
-    param('type').custom((type) => ['group', 'team'].includes(type)).withMessage('Interview type is invalid!'),
+    param('type')
+        .custom((type) => ['group', 'team'].includes(type))
+        .withMessage('Interview type is invalid!'),
     body('time').isInt().withMessage('Interview time is invalid!'),
     param('cid').isString().withMessage('Candidate id is invalid!'),
 ];

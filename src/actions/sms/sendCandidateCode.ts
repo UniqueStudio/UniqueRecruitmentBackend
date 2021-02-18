@@ -18,15 +18,15 @@ export const sendCandidateCode: RequestHandler = async (req, res, next) => {
         const response = await fetch(smsAPI, {
             method: 'POST',
             headers: {
-                'Token': token,
-                'Content-Type': 'application/json'
+                Token: token,
+                'Content-Type': 'application/json',
             },
             // 您{1}的验证码为：{2}，请于3分钟内填写。如非本人操作，请忽略本短信。
             body: JSON.stringify({
                 phone,
                 template: 719160,
-                param_list: ['报名本次招新', code]
-            })
+                param_list: ['报名本次招新', code],
+            }),
         });
         const result = await response.json();
         if (result.code !== 200) {
@@ -39,6 +39,4 @@ export const sendCandidateCode: RequestHandler = async (req, res, next) => {
     }
 };
 
-export const sendCandidateCodeVerify = [
-    param('phone').isMobilePhone('zh-CN').withMessage('Phone is invalid!')
-];
+export const sendCandidateCodeVerify = [param('phone').isMobilePhone('zh-CN').withMessage('Phone is invalid!')];

@@ -9,9 +9,9 @@ describe('GET /candidate', () => {
         expect(users.length).toBe(1);
         const token = generateJWT({ id: users[0]._id }, 100000);
         request(app)
-            .get(`/candidate/${JSON.stringify({title: '2021C', group: 'web'})}`)
+            .get(`/candidate/${JSON.stringify({ title: '2021C', group: 'web' })}`)
             .set({
-                Authorization: token
+                Authorization: token,
             })
             .end((err, res) => {
                 console.log(res.text);

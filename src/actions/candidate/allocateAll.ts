@@ -13,7 +13,7 @@ export const allocateAll: RequestHandler = async (req, res, next) => {
         }
         const user = await UserRepo.queryById(res.locals.id);
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         const { group } = user;
         const { title } = req.body;
@@ -22,7 +22,7 @@ export const allocateAll: RequestHandler = async (req, res, next) => {
         if (type === 'group') {
             const groupData = recruitment.groups.find(({ name }) => name === group);
             if (!groupData) {
-                return next(errorRes('Group doesn\'t exist!', 'warning'));
+                return next(errorRes("Group doesn't exist!", 'warning'));
             }
             if (!groupData.interview.length) {
                 return next(errorRes('Please set group interview time first!', 'warning'));
@@ -71,6 +71,8 @@ export const allocateAll: RequestHandler = async (req, res, next) => {
 };
 
 export const allocateAllVerify = [
-    param('type').custom((type) => ['group', 'team'].includes(type)).withMessage('Interview type is invalid!'),
-    verifyTitle
+    param('type')
+        .custom((type) => ['group', 'team'].includes(type))
+        .withMessage('Interview type is invalid!'),
+    verifyTitle,
 ];

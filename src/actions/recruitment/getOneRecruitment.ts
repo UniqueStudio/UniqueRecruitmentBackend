@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 
-import { RecruitmentRepo/*, UserRepo*/ } from '@database/model';
+import { RecruitmentRepo /*, UserRepo*/ } from '@database/model';
 import { errorRes } from '@utils/errorRes';
 
 export const getOneRecruitment: RequestHandler = async (req, res, next) => {
@@ -17,7 +17,7 @@ export const getOneRecruitment: RequestHandler = async (req, res, next) => {
         // }
         const data = await RecruitmentRepo.query({ title });
         if (!data.length) {
-            return next(errorRes('Recruitment doesn\'t exist!', 'warning'));
+            return next(errorRes("Recruitment doesn't exist!", 'warning'));
         }
         res.json({ data: data[0], type: 'success' });
     } catch (error) {

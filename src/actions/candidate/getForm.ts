@@ -21,7 +21,7 @@ export const getForm: RequestHandler = async (req, res, next) => {
                 const recruitmentId = formId.slice(0, -2);
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 const groupData = recruitment.groups.find((group) => group.name === GROUPS_[groupId]);
                 return res.json({ type: 'success', time: groupData!.interview, token });
@@ -30,12 +30,12 @@ export const getForm: RequestHandler = async (req, res, next) => {
                 const recruitmentId = formId.slice(0, -1);
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 return res.json({ type: 'success', time: recruitment.interview, token });
             }
             default: {
-                return next(errorRes('Form doesn\'t exist！', 'warning'));
+                return next(errorRes("Form doesn't exist！", 'warning'));
             }
         }
     } catch (error) {

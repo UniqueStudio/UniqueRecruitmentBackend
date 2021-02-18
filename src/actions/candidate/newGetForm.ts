@@ -18,7 +18,7 @@ export const newGetForm: RequestHandler = async (req, res, next) => {
         if (!payload) {
             payload = (await PayloadRepo.query({ hash }))[0];
             if (!payload) {
-                return next(errorRes('Form doesn\'t exist!', 'warning'));
+                return next(errorRes("Form doesn't exist!", 'warning'));
             }
         }
         const { id, recruitmentId, step, group: groupName } = payload;
@@ -29,7 +29,7 @@ export const newGetForm: RequestHandler = async (req, res, next) => {
                 // 组面
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist!', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist!", 'warning'));
                 }
                 const groupData = recruitment.groups.find((group) => group.name === groupName);
                 return res.json({ type: 'success', time: groupData!.interview, token, step });
@@ -38,12 +38,12 @@ export const newGetForm: RequestHandler = async (req, res, next) => {
                 // 群面
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist!', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist!", 'warning'));
                 }
                 return res.json({ type: 'success', time: recruitment.interview, token, step });
             }
             default: {
-                return next(errorRes('Form doesn\'t exist!', 'warning'));
+                return next(errorRes("Form doesn't exist!", 'warning'));
             }
         }
     } catch (error) {
@@ -51,6 +51,4 @@ export const newGetForm: RequestHandler = async (req, res, next) => {
     }
 };
 
-export const newGetFormVerify = [
-    param('hash').isString().withMessage('URL is invalid!'),
-];
+export const newGetFormVerify = [param('hash').isString().withMessage('URL is invalid!')];

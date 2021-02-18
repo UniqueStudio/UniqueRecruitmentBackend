@@ -26,8 +26,8 @@ describe('POST /user/admin', () => {
                 group: 'web',
                 password: {
                     salt,
-                    hash
-                }
+                    hash,
+                },
             });
         } else {
             await UserRepo.updateById(admin[0]._id, { isAdmin: false });
@@ -36,11 +36,11 @@ describe('POST /user/admin', () => {
         request(app)
             .post('/user/admin')
             .set({
-                Authorization: token
+                Authorization: token,
             })
             .send({
                 group: 'web',
-                who: ['w1nd3r1c4', 'colinaaa', 'faker']
+                who: ['w1nd3r1c4', 'colinaaa', 'faker'],
             })
             .end(async (err, res) => {
                 const result = JSON.parse(res.text);

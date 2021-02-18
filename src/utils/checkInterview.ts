@@ -10,10 +10,13 @@ export const checkInterview: CustomValidator = (interview) => {
     if (!interview.length) {
         return true;
     }
-    return interview.filter(({ date, morning, afternoon, evening }) =>
-        typeof date !== 'number'
-        || typeof morning !== 'number'
-        || typeof afternoon !== 'number'
-        || typeof evening !== 'number'
-    ).length === 0;
+    return (
+        interview.filter(
+            ({ date, morning, afternoon, evening }) =>
+                typeof date !== 'number' ||
+                typeof morning !== 'number' ||
+                typeof afternoon !== 'number' ||
+                typeof evening !== 'number'
+        ).length === 0
+    );
 };

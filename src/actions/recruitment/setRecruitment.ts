@@ -13,7 +13,7 @@ export const setRecruitment: RequestHandler = async (req, res, next) => {
         }
         const user = await UserRepo.queryById(res.locals.id);
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         const { isAdmin, isCaptain, group: userGroup } = user;
         if (!isAdmin && !isCaptain) {
@@ -21,29 +21,38 @@ export const setRecruitment: RequestHandler = async (req, res, next) => {
         }
         const { title } = req.params;
         const { begin, end, stop, groupInterview, teamInterview, group } = req.body;
-        await RecruitmentRepo.update({ title }, {
-            begin,
-            end,
-            stop
-        });
+        await RecruitmentRepo.update(
+            { title },
+            {
+                begin,
+                end,
+                stop,
+            }
+        );
         if (teamInterview && teamInterview.length) {
-            await RecruitmentRepo.update({ title }, {
-                interview: teamInterview
-            });
+            await RecruitmentRepo.update(
+                { title },
+                {
+                    interview: teamInterview,
+                }
+            );
         }
         if (groupInterview && groupInterview.length) {
             if (!group) {
-                return next(errorRes('Group isn\'t specified!', 'warning'));
+                return next(errorRes("Group isn't specified!", 'warning'));
             }
             if (!isAdmin && group !== userGroup) {
                 return next(errorRes('Permission denied', 'warning'));
             }
-            await RecruitmentRepo.update({
-                title,
-                'groups.name': group,
-            }, {
-                'groups.$.interview': groupInterview
-            });
+            await RecruitmentRepo.update(
+                {
+                    title,
+                    'groups.name': group,
+                },
+                {
+                    'groups.$.interview': groupInterview,
+                }
+            );
         }
         io.emit('updateRecruitment');
         return res.json({ type: 'success' });
@@ -53,11 +62,13 @@ export const setRecruitment: RequestHandler = async (req, res, next) => {
 };
 
 export const setRecruitmentVerify = [
-    param('title').matches(/\d{4}[ASC]/, 'g').withMessage('Title is invalid!')
+    param('title')
+        .matches(/\d{4}[ASC]/, 'g')
+        .withMessage('Title is invalid!')
         .custom(async (title) => {
             const recruitment = (await RecruitmentRepo.query({ title }))[0];
             if (!recruitment) {
-                throw new Error('Current recruitment doesn\'t exist!');
+                throw new Error("Current recruitment doesn't exist!");
             }
             // if (Date.now() < recruitment.begin) {
             //     throw new Error('Current recruitment is not started!');
@@ -66,12 +77,21 @@ export const setRecruitmentVerify = [
                 throw new Error('Current recruitment has ended!');
             }
         }),
-    body('begin').isInt().withMessage('Begin time is invalid!')
-        .custom((begin, { req }) => begin < req.body.stop).withMessage('Stop applying time should be later than begin time'),
-    body('stop').isInt().withMessage('Stop applying time is invalid!')
-        .custom((stop, { req }) => stop < req.body.end).withMessage('End time should be later than stop applying time'),
-    body('end').isInt().withMessage('End time is invalid!')
-        .custom((end, { req }) => end > req.body.begin).withMessage('End time should be later than begin time'),
+    body('begin')
+        .isInt()
+        .withMessage('Begin time is invalid!')
+        .custom((begin, { req }) => begin < req.body.stop)
+        .withMessage('Stop applying time should be later than begin time'),
+    body('stop')
+        .isInt()
+        .withMessage('Stop applying time is invalid!')
+        .custom((stop, { req }) => stop < req.body.end)
+        .withMessage('End time should be later than stop applying time'),
+    body('end')
+        .isInt()
+        .withMessage('End time is invalid!')
+        .custom((end, { req }) => end > req.body.begin)
+        .withMessage('End time should be later than begin time'),
     body('teamInterview').custom(checkInterview).withMessage('Interview time is invalid!'),
     body('groupInterview').custom(checkInterview).withMessage('Interview time is invalid!'),
 ];

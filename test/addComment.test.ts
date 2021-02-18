@@ -33,7 +33,7 @@ describe('WebSocket /addComment', () => {
         socket.emit('addComment', {
             cid: candidates[0]._id,
             comment: { uid: users[0]._id, content: 'testddd', evaluation: 1, username: 'w1nd3r1c4' },
-            token
+            token,
         });
         socket.on('addComment', (...res: any) => {
             console.log(res);

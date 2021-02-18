@@ -18,9 +18,12 @@ export const setCandidate: RequestHandler = async (req, res, next) => {
         }
         const candidate = await CandidateRepo.queryById(id);
         if (!candidate) {
-            return next(errorRes('Candidate doesn\'t exist!', 'warning'));
+            return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const { interviews: { group, team }, rejected } = candidate;
+        const {
+            interviews: { group, team },
+            rejected,
+        } = candidate;
         if (candidate.abandon) {
             return next(errorRes('You have already abandoned!', 'warning'));
         }
@@ -29,7 +32,7 @@ export const setCandidate: RequestHandler = async (req, res, next) => {
         }
         if (abandon) {
             await CandidateRepo.updateById(id, {
-                abandon
+                abandon,
             });
             return res.json({ type: 'success' });
         }
@@ -39,7 +42,7 @@ export const setCandidate: RequestHandler = async (req, res, next) => {
                 const recruitmentId = formId.slice(0, -2);
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 if (recruitment.end < Date.now()) {
                     return next(errorRes('This recruitment has already ended!', 'warning'));
@@ -59,7 +62,7 @@ export const setCandidate: RequestHandler = async (req, res, next) => {
                 const recruitmentId = formId.slice(0, -1);
                 const recruitment = await RecruitmentRepo.queryById(recruitmentId);
                 if (!recruitment) {
-                    return next(errorRes('Recruitment doesn\'t exist！', 'warning'));
+                    return next(errorRes("Recruitment doesn't exist！", 'warning'));
                 }
                 if (recruitment.end < Date.now()) {
                     return next(errorRes('This recruitment has already ended!', 'warning'));

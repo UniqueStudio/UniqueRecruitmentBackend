@@ -20,7 +20,7 @@ import {
     newSetCandidate,
     newSetCandidateVerify,
     setCandidate,
-    setCandidateVerify
+    setCandidateVerify,
 } from '../actions/candidate';
 
 const router = Router();

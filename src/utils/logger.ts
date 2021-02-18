@@ -9,5 +9,5 @@ export const logger = {
     },
     error: (message: string) => {
         logError.write(`${new Date().toISOString()} [ERROR] ${message}\n`);
-    }
+    },
 };

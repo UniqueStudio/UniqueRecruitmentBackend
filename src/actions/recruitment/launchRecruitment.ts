@@ -14,7 +14,7 @@ export const launchRecruitment: RequestHandler = async (req, res, next) => {
         }
         const user = await UserRepo.queryById(res.locals.id);
         if (!user) {
-            return next(errorRes('User doesn\'t exist!', 'warning'));
+            return next(errorRes("User doesn't exist!", 'warning'));
         }
         const { isAdmin, isCaptain } = user;
         if (!isAdmin && !isCaptain) {
@@ -37,15 +37,27 @@ export const launchRecruitment: RequestHandler = async (req, res, next) => {
 };
 
 export const launchRecruitmentVerify = [
-    body('title').matches(/\d{4}[ASC]/, 'g').withMessage('Title is invalid!').custom(async (title) => {
-        if ((await RecruitmentRepo.query({ title })).length) {
-            throw new Error('Current recruitment has already been launched!');
-        }
-    }),
-    body('begin').isInt().withMessage('Begin time is invalid!')
-        .custom((begin, { req }) => begin < req.body.stop).withMessage('Stop time should be later than begin time'),
-    body('stop').isInt().withMessage('Stop time is invalid!')
-        .custom((stop, { req }) => stop < req.body.end).withMessage('End time should be later than stop time'),
-    body('end').isInt().withMessage('End time is invalid!')
-        .custom((end, { req }) => end > req.body.begin).withMessage('End time should be later than begin time'),
+    body('title')
+        .matches(/\d{4}[ASC]/, 'g')
+        .withMessage('Title is invalid!')
+        .custom(async (title) => {
+            if ((await RecruitmentRepo.query({ title })).length) {
+                throw new Error('Current recruitment has already been launched!');
+            }
+        }),
+    body('begin')
+        .isInt()
+        .withMessage('Begin time is invalid!')
+        .custom((begin, { req }) => begin < req.body.stop)
+        .withMessage('Stop time should be later than begin time'),
+    body('stop')
+        .isInt()
+        .withMessage('Stop time is invalid!')
+        .custom((stop, { req }) => stop < req.body.end)
+        .withMessage('End time should be later than stop time'),
+    body('end')
+        .isInt()
+        .withMessage('End time is invalid!')
+        .custom((end, { req }) => end > req.body.begin)
+        .withMessage('End time should be later than begin time'),
 ];

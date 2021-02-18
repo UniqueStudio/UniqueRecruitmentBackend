@@ -8,61 +8,67 @@ const arrayToIndex = (array: string[]) => array.map((i, j) => j);
 const commentSchema = createSchema({
     uid: {
         type: String,
-        required: true
+        required: true,
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     content: {
         type: String,
-        required: true
+        required: true,
     },
     evaluation: {
         type: Number,
         required: true,
-        enum: arrayToIndex(EVALUATIONS)
-    }
+        enum: arrayToIndex(EVALUATIONS),
+    },
 });
 
-const timeSchema = createSchema({
-    date: {
-        type: Number,
-        required: true
+const timeSchema = createSchema(
+    {
+        date: {
+            type: Number,
+            required: true,
+        },
+        morning: {
+            type: Number,
+            required: true,
+        },
+        afternoon: {
+            type: Number,
+            required: true,
+        },
+        evening: {
+            type: Number,
+            required: true,
+        },
     },
-    morning: {
-        type: Number,
-        required: true
-    },
-    afternoon: {
-        type: Number,
-        required: true
-    },
-    evening: {
-        type: Number,
-        required: true
-    }
-}, false);
+    false
+);
 
-const interviewSchema = createSchema({
-    selection: {
-        type: [timeSchema],
+const interviewSchema = createSchema(
+    {
+        selection: {
+            type: [timeSchema],
+        },
+        allocation: {
+            type: Number,
+        },
     },
-    allocation: {
-        type: Number,
-    }
-}, false);
+    false
+);
 
 const candidateSchema = createSchema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     gender: {
         type: Number,
         required: true,
         enum: arrayToIndex(GENDERS),
-        alias: 'sex'
+        alias: 'sex',
     },
     grade: {
         type: Number,
@@ -71,25 +77,25 @@ const candidateSchema = createSchema({
     },
     institute: {
         type: String,
-        required: true
+        required: true,
     },
     major: {
         type: String,
-        required: true
+        required: true,
     },
     rank: {
         type: Number,
         required: true,
         enum: arrayToIndex(RANKS),
-        alias: 'score'
+        alias: 'score',
     },
     mail: {
         type: String,
-        required: true
+        required: true,
     },
     phone: {
         type: String,
-        required: true
+        required: true,
     },
     group: {
         type: String,
@@ -99,50 +105,50 @@ const candidateSchema = createSchema({
     },
     abandon: {
         type: Boolean,
-        default: false
+        default: false,
     },
     rejected: {
         type: Boolean,
-        default: false
+        default: false,
     },
     interviews: {
         group: {
             type: interviewSchema,
-            default: interviewSchema
+            default: interviewSchema,
         },
         team: {
             type: interviewSchema,
-            default: interviewSchema
+            default: interviewSchema,
         },
     },
     title: {
         type: String,
-        required: true
+        required: true,
     },
     step: {
         type: Number,
         enum: arrayToIndex(STEPS),
-        default: 0
+        default: 0,
     },
     intro: {
         type: String,
-        required: true
+        required: true,
     },
     isQuick: {
         type: Boolean,
-        required: true
+        required: true,
     },
     resume: {
         type: String,
-        default: ''
+        default: '',
     },
     comments: {
         type: [commentSchema],
-        default: []
+        default: [],
     },
     referrer: {
-        type: String
-    }
+        type: String,
+    },
 });
 
 const CandidateModel = model<Candidate>('candidate', candidateSchema);
@@ -151,7 +157,7 @@ export const CandidateRepo = new RepositoryBase<Candidate>(CandidateModel);
 const userSchema = createSchema({
     weChatID: {
         type: String,
-        required: true
+        required: true,
     },
     password: {
         hash: String,
@@ -159,97 +165,100 @@ const userSchema = createSchema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     joinTime: {
         type: String,
-        required: true
+        required: true,
     },
     isCaptain: {
         type: Boolean,
-        required: true
+        required: true,
     },
     isAdmin: {
         type: Boolean,
-        required: true
+        required: true,
     },
     phone: {
         type: String,
-        required: true
+        required: true,
     },
     mail: {
         type: String,
-        default: ''
+        default: '',
     },
     gender: {
         type: Number,
         required: true,
         enum: arrayToIndex(GENDERS),
-        alias: 'sex'
+        alias: 'sex',
     },
     group: {
         type: String,
         required: true,
         lowercase: true,
-        enum: GROUPS_
+        enum: GROUPS_,
     },
     avatar: {
         type: String,
-        default: ''
+        default: '',
     },
 });
 
 const UserModel = model<User>('user', userSchema);
 export const UserRepo = new RepositoryBase<User>(UserModel);
 
-const groupDataSchema = createSchema({
-    name: {
-        type: String,
-        required: true,
-        enum: GROUPS_,
-        lowercase: true,
+const groupDataSchema = createSchema(
+    {
+        name: {
+            type: String,
+            required: true,
+            enum: GROUPS_,
+            lowercase: true,
+        },
+        total: {
+            type: Number,
+            default: 0,
+        },
+        steps: {
+            type: [Number],
+            default: STEPS.map(() => 0),
+        },
+        interview: {
+            type: [timeSchema],
+        },
     },
-    total: {
-        type: Number,
-        default: 0
-    },
-    steps: {
-        type: [Number],
-        default: STEPS.map(() => 0)
-    },
-    interview: {
-        type: [timeSchema],
-    }
-}, false);
+    false
+);
 
 const recruitmentSchema = createSchema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     begin: {
         type: Number,
-        required: true
+        required: true,
     },
     end: {
         type: Number,
-        required: true
+        required: true,
     },
     stop: {
         type: Number,
-        required: true
+        required: true,
     },
     total: {
         type: Number,
-        default: 0
+        default: 0,
     },
     interview: {
         type: [timeSchema],
     },
     groups: {
         type: [groupDataSchema],
-        required: true
-    }
+        required: true,
+    },
 });
 
 const RecruitmentModel = model<Recruitment>('recruitment', recruitmentSchema);
@@ -261,7 +270,7 @@ const payloadSchema = createSchema({
     },
     group: {
         type: String,
-        enum: GROUPS_
+        enum: GROUPS_,
     },
     step: {
         type: String,
@@ -272,8 +281,8 @@ const payloadSchema = createSchema({
     },
     hash: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 });
 
 const payloadModel = model<FormPayload>('payload', payloadSchema);
