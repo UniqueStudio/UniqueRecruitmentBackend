@@ -9,7 +9,17 @@ export const getPendingTitles: RequestHandler = async (req, res, next) => {
         if (pending.length === 0) {
             return next(errorRes('No pending recruitment!', 'info'));
         }
-        res.json({ data: pending.map((item) => item.title), type: 'success' });
+        res.json({
+            data: pending.map((item) => {
+                return {
+                    title: item.title,
+                    begin: item.begin,
+                    end: item.end,
+                    stop: item.stop,
+                };
+            }),
+            type: 'success',
+        });
     } catch (error) {
         return next(error);
     }

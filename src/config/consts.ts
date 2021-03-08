@@ -20,6 +20,8 @@ export const shortenURLAPI = `https://v1.alapi.cn/api/url`;
 export const GROUPS = ['Web', 'Lab', 'AI', 'Game', 'Android', 'iOS', 'Design', 'PM'];
 export const GROUPS_ = GROUPS.map((group) => group.toLowerCase());
 export const STEPS = ['报名流程', '笔试流程', '面试流程', '熬测流程', '群面流程', '通过'];
+export const GROUP_INTERVIEW_STEP = STEPS.findIndex((str) => str === '面试流程');
+export const TEAM_INTERVIEW_STEP = STEPS.findIndex((str) => str === '群面流程');
 export const RANKS = ['暂无', '前10%', '前25%', '前50%', '前100%'];
 export const GRADES = ['大一', '大二', '大三', '大四', '研一', '研二', '研三'];
 export const GENDERS = ['其他', '男', '女'];

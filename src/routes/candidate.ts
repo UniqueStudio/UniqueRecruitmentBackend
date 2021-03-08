@@ -26,6 +26,7 @@ import {
     getCandidate,
     updateCandidateVerify,
     updateCandidate,
+    getTimeSelection,
 } from '../actions/candidate';
 
 const router = Router();
@@ -35,10 +36,14 @@ router.post('/', fileHandler.single('resume'), addCandidateVerify, codeChecker('
 
 router.get('/', authenticator('candidate'), getCandidate);
 
-router.put('/', fileHandler.single('resume'), updateCandidateVerify, updateCandidate);
+router.put('/', authenticator('candidate'), fileHandler.single('resume'), updateCandidateVerify, updateCandidate);
 
 //login
 router.post('/login', handleCandidateLoginVerify, codeChecker('candidate'), handleCandidateLogin);
+
+//time selection
+
+router.get('/time', authenticator('candidate'), getTimeSelection);
 
 // generate form
 router.get('/:cid/form/:formId', getFormVerify, getForm);

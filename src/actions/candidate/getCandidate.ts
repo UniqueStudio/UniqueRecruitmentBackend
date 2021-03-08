@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
 import { CandidateRepo, RecruitmentRepo } from '@database/model';
-import { compareTitle } from '@utils/compareTitle';
 import { errorRes } from '@utils/errorRes';
 
 export const getCandidate: RequestHandler = async (req, res, next) => {
@@ -12,7 +11,7 @@ export const getCandidate: RequestHandler = async (req, res, next) => {
         }
         const title = pending[0].title;
         const candidate = await CandidateRepo.query({ title, phone });
-        if (!candidate) {
+        if (candidate.length === 0) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
         res.json({
@@ -34,6 +33,9 @@ export const getCandidate: RequestHandler = async (req, res, next) => {
                     isQuick: item.isQuick,
                     title: item.title,
                     referrer: item.referrer,
+                    interviews: item.interviews,
+                    groupInterview: item.groupInterview,
+                    teamInterview: item.teamInterview,
                 };
             })[0],
             type: 'success',

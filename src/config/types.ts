@@ -42,6 +42,8 @@ export interface Candidate extends Document {
     };
     step: Step;
     comments: Comment[];
+    groupInterview: boolean;
+    teamInterview: boolean;
 }
 
 export interface Comment extends Document {

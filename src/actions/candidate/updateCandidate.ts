@@ -67,7 +67,6 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
         await updateGroupCount(preGroup);
         await updateGroupCount(group);
         res.json({ type: 'success' });
-        //TODO: io.emit的作用
         //TODO: ADD timestamp
         io.emit('updateCandidate', { candidate: info });
         io.emit('updateRecruitment');

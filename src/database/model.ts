@@ -149,6 +149,14 @@ const candidateSchema = createSchema({
     referrer: {
         type: String,
     },
+    groupInterview: {
+        type: Boolean,
+        default: false,
+    },
+    teamInterview: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const CandidateModel = model<Candidate>('candidate', candidateSchema);

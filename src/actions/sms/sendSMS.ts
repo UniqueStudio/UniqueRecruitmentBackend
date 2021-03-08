@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import moment from 'moment';
 import fetch from 'node-fetch';
 import { shortenURL } from '@utils/shortenURL';
-import { formURL, smsAPI, token } from '@config/consts';
+import { formURL, GROUP_INTERVIEW_STEP, smsAPI, TEAM_INTERVIEW_STEP, token } from '@config/consts';
 import { CandidateRepo, PayloadRepo, RecruitmentRepo } from '@database/model';
 import { redisAsync } from '../../redis';
 import { errorRes } from '@utils/errorRes';
@@ -18,6 +18,20 @@ const dateTranslator = (timestamp: number) => {
     return `${date.month() + 1}月${date.date()}日${padZero(date.hour())}:${padZero(date.minute())}`;
 };
 
+const setPasser = async (id: string, nextStep: number) => {
+    const candidateInfo = await CandidateRepo.queryById(id);
+    if (!candidateInfo) {
+        return new Error("Candidate doesn't exist!");
+    }
+    if (nextStep === GROUP_INTERVIEW_STEP) {
+        candidateInfo.groupInterview = true;
+    }
+    if (nextStep === TEAM_INTERVIEW_STEP) {
+        candidateInfo.teamInterview = true;
+    }
+    await candidateInfo.save();
+};
+
 const send = (req: Request) => {
     const { step, type, time, place, rest, next: nextStep, candidates } = req.body;
     let recruitmentId = '';
@@ -30,6 +44,7 @@ const send = (req: Request) => {
         let hash = '';
         try {
             if (type === 'accept') {
+                //TODO: 废弃formid的设定
                 if (!recruitmentId) {
                     // 仅执行一次，用于生成含有recruitment id的formId
                     // 以后所有的candidates都可以复用这个formId
@@ -67,6 +82,7 @@ const send = (req: Request) => {
                 ]).catch((e) => {
                     throw new Error(`Error in ${name}: ${e}`);
                 });
+                setPasser(id, nextStep);
             }
             if (type === 'reject') {
                 await CandidateRepo.updateById(id, { rejected: true });
