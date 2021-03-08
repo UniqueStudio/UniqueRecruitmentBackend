@@ -15,3 +15,4 @@ export { handleCandidateLogin, handleCandidateLoginVerify } from './handleCandid
 export { getCandidate } from './getCandidate';
 export { updateCandidateVerify, updateCandidate } from './updateCandidate';
 export { getTimeSelection } from './getTimeSelection';
+export { setTimeSelection, setTimeSelectionVerify } from './setTimeSelection';

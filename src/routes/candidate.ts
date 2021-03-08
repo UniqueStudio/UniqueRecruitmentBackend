@@ -27,6 +27,8 @@ import {
     updateCandidateVerify,
     updateCandidate,
     getTimeSelection,
+    setTimeSelection,
+    setTimeSelectionVerify,
 } from '../actions/candidate';
 
 const router = Router();
@@ -44,6 +46,8 @@ router.post('/login', handleCandidateLoginVerify, codeChecker('candidate'), hand
 //time selection
 
 router.get('/time', authenticator('candidate'), getTimeSelection);
+
+router.post('/time', authenticator('candidate'), setTimeSelectionVerify, setTimeSelection);
 
 // generate form
 router.get('/:cid/form/:formId', getFormVerify, getForm);
