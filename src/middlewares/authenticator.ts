@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { errorRes } from '@utils/errorRes';
 import { verifyJWT } from '@utils/verifyJWT';
 

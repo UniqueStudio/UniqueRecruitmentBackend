@@ -34,13 +34,13 @@ describe('POST /user/admin', () => {
         }
         const token = generateJWT({ id: users[0]._id }, 100000);
         request(app)
-            .post('/user/admin')
+            .put('/user/admin')
             .set({
                 Authorization: token,
             })
             .send({
                 group: 'web',
-                who: ['w1nd3r1c4', 'colinaaa', 'faker'],
+                who: ['19876543210', '13456789012'],
             })
             .end(async (err, res) => {
                 const result = JSON.parse(res.text);

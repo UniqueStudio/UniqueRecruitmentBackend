@@ -5,7 +5,7 @@ import { generateJWT } from '../src/utils/generateJWT';
 describe('WebSocket /addComment', () => {
     let socket: typeof io.Socket;
     beforeEach((done) => {
-        socket = io('http://192.168.1.200:5000');
+        socket = io('http://localhost:5000');
         socket.on('connect', () => {
             console.log('worked...');
             done();

@@ -10,7 +10,6 @@ interface Model {
     time: string;
     place: string;
     rest: string;
-    url: string;
 }
 
 export const generateSMS = ({ name, title, step, type, group, time, place, rest, nextStep }: Model) => {

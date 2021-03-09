@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express';
-import { body, param, validationResult } from 'express-validator';
+import { body, validationResult } from 'express-validator';
 import { checkInterview } from '@utils/checkInterview';
 import { errorRes } from '@utils/errorRes';
-import { CandidateRepo, RecruitmentRepo } from '@database/model';
+import { CandidateRepo } from '@database/model';
 import { GROUP_INTERVIEW_STEP, TEAM_INTERVIEW_STEP } from '@config/consts';
-import { group } from 'console';
 
 export const setTimeSelection: RequestHandler = async (req, res, next) => {
     try {

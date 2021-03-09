@@ -55,13 +55,14 @@
         "ts-node-dev": "^1.1.1",
         "tsc-alias": "^1.1.1",
         "tsconfig-paths": "^3.9.0",
+        "tsconfig-paths-jest": "^0.0.1",
         "tslint": "^6.1.2",
         "typescript": "^3.9.5"
     },
     "scripts": {
         "build": "tsc",
         "postbuild": "ts-node scripts/resolveAlias.ts",
-        "test": "jest --forceExit",
+        "test": "NODE_ENV=development TOKEN=token SECRET=secre jest -i --forceExit",
         "startProd": "node build/src/index.js",
         "startDev": "NODE_ENV=development TOKEN=token SECRET=secret ts-node-dev --respawn --transpile-only  -r tsconfig-paths/register src/index.ts"
     }

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { secret } from '@config/consts';
 import { FormPayload } from '@config/types';
+import { isDev } from './environment';
 
 export const extractJWT = (token?: string): FormPayload => {
     if (!token) {
@@ -10,7 +11,7 @@ export const extractJWT = (token?: string): FormPayload => {
         token = token.replace('Bearer ', '');
     }
 
-    const payload = jwt.verify(token, secret) as FormPayload;
+    const payload = jwt.verify(token, isDev() ? 'DEV' : secret) as FormPayload;
     return payload;
 };
 

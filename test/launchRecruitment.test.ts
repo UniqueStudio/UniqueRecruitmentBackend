@@ -1,11 +1,12 @@
 import request from 'supertest';
 import { app } from '../src/app';
-import { UserRepo } from '../src/database/model';
+import { RecruitmentRepo, UserRepo } from '../src/database/model';
 import { generateJWT } from '../src/utils/generateJWT';
 
 describe('POST /recruitment', () => {
     it('should create a new recruitment', async (done) => {
         const users = await UserRepo.query({ weChatID: 'foo' });
+        await RecruitmentRepo.delete({ title: '2021C' });
         expect(users.length).toBe(1);
         const token = generateJWT({ id: users[0]._id }, 100000);
         request(app)

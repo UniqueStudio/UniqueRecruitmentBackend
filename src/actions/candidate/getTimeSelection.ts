@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { CandidateRepo, RecruitmentRepo } from '@database/model';
 import { errorRes } from '@utils/errorRes';
-import { GROUPS_, GROUP_INTERVIEW_STEP, TEAM_INTERVIEW_STEP } from '@config/consts';
+import { GROUP_INTERVIEW_STEP, TEAM_INTERVIEW_STEP } from '@config/consts';
 
 export const getTimeSelection: RequestHandler = async (req, res, next) => {
     try {

@@ -15,21 +15,7 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             return next(errorRes(errors.array({ onlyFirstError: true })[0]['msg'], 'warning'));
         }
         const { id } = res.locals;
-        const {
-            name,
-            grade,
-            institute,
-            major,
-            rank,
-            mail,
-            phone,
-            group,
-            gender,
-            intro,
-            title,
-            isQuick,
-            referrer,
-        } = req.body;
+        const { name, grade, institute, major, rank, mail, group, gender, intro, title, isQuick, referrer } = req.body;
         let filepath = '';
         if (req.file) {
             const { originalname: filename, path: oldPath } = req.file;
