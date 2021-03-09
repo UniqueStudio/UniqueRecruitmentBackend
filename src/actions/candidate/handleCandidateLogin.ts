@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { errorRes } from '@utils/errorRes';
 import { generateJWT } from '@utils/generateJWT';
 import { CandidateRepo, RecruitmentRepo } from '@database/model';
+import { JWT_EXPIRE_TIME } from '@config/consts';
 
 export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
     try {
@@ -21,7 +22,7 @@ export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
         const id = candidate._id;
-        const token = generateJWT({ id }, 604800);
+        const token = generateJWT({ id }, JWT_EXPIRE_TIME);
         res.json({ token, type: 'success' });
     } catch (error) {
         return next(error);

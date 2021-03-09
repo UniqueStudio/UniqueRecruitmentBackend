@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { io } from '../../app';
 
-import { GENDERS, GRADES, GROUPS_, RANKS } from '@config/consts';
+import { GENDERS, GRADES, GROUPS_, JWT_EXPIRE_TIME, RANKS } from '@config/consts';
 import { CandidateRepo, RecruitmentRepo } from '@database/model';
 import { titleConverter } from '@utils/titleConverter';
 import { copyFile } from '@utils/copyFile';
@@ -64,7 +64,7 @@ export const addCandidate: RequestHandler = async (req, res, next) => {
                 total: await CandidateRepo.count({ title }),
             }
         );
-        const token = generateJWT({ id: info._id }, 604800);
+        const token = generateJWT({ id: info._id }, JWT_EXPIRE_TIME);
         res.json({ type: 'success', token });
         io.emit('addCandidate', { candidate: info });
         io.emit('updateRecruitment');

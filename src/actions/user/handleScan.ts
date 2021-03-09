@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import fetch from 'node-fetch';
-import { accessTokenURL, ID_TO_GROUP, scanningURL, userIDURL, userInfoURL } from '@config/consts';
+import { accessTokenURL, ID_TO_GROUP, JWT_EXPIRE_TIME, scanningURL, userIDURL, userInfoURL } from '@config/consts';
 import { UserRepo } from '@database/model';
 import { errorRes } from '@utils/errorRes';
 import { generateJWT } from '@utils/generateJWT';
@@ -107,7 +107,7 @@ export const handleScan: RequestHandler = async (req, res, next) => {
                 if (data.isCaptain && !user.isCaptain) {
                     await UserRepo.updateById(user._id, { isCaptain: true, isAdmin: true });
                 }
-                const token = generateJWT({ id: user._id }, 604800);
+                const token = generateJWT({ id: user._id }, JWT_EXPIRE_TIME);
                 res.json({ token, type: 'success' });
             }
         }

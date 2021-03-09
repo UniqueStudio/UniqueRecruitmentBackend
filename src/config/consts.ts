@@ -51,6 +51,7 @@ export const ID_TO_GROUP = {
 export const secret = SECRET!;
 
 export const CANDIDATE_EDIT_INTERVAL = 1000 * 60 * 60 * 12; //Half of Day
+export const JWT_EXPIRE_TIME = 60 * 60 * 24 * 7; //7 days
 
 export const Acm = {
     endpoint: 'acm.aliyun.com',

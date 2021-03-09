@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import { UserRepo } from '@database/model';
 import { errorRes } from '@utils/errorRes';
 import { generateJWT } from '@utils/generateJWT';
+import { JWT_EXPIRE_TIME } from '@config/consts';
 
 export const handleLogin: RequestHandler = async (req, res, next) => {
     try {
@@ -26,7 +27,7 @@ export const handleLogin: RequestHandler = async (req, res, next) => {
         if (hash !== crypto.scryptSync(password, salt, 64).toString()) {
             return next(errorRes('Password is incorrect!', 'warning'));
         }
-        const token = generateJWT({ id: user._id }, 604800);
+        const token = generateJWT({ id: user._id }, JWT_EXPIRE_TIME);
         res.json({ token, type: 'success' });
     } catch (error) {
         return next(error);

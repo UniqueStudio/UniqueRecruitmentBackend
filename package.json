@@ -63,6 +63,6 @@
         "postbuild": "ts-node scripts/resolveAlias.ts",
         "test": "jest --forceExit",
         "startProd": "node build/src/index.js",
-        "startDev": "ts-node -r tsconfig-paths/register --files src/index.ts"
+        "startDev": "NODE_ENV=development TOKEN=token SECRET=secret ts-node-dev --respawn --transpile-only  -r tsconfig-paths/register src/index.ts"
     }
 }
