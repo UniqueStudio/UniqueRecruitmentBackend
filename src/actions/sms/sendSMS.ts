@@ -2,13 +2,10 @@ import { Request, RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
 import moment from 'moment';
 import fetch from 'node-fetch';
-import { shortenURL } from '@utils/shortenURL';
 import { formURL, GROUP_INTERVIEW_STEP, smsAPI, TEAM_INTERVIEW_STEP, token } from '@config/consts';
 import { CandidateRepo, PayloadRepo, RecruitmentRepo } from '@database/model';
-import { redisAsync } from '../../redis';
 import { errorRes } from '@utils/errorRes';
 import { generateSMS } from '@utils/generateSMS';
-import md5 from '@utils/md5';
 import { titleConverter } from '@utils/titleConverter';
 
 const padZero = (toPad: number) => toPad.toString().padStart(2, '0');
@@ -30,64 +27,65 @@ const setPasser = async (id: string, nextStep: number) => {
         candidateInfo.teamInterview = true;
     }
     await candidateInfo.save();
+    return;
 };
 
 const send = (req: Request) => {
     const { step, type, time, place, rest, next: nextStep, candidates } = req.body;
-    let recruitmentId = '';
+    // let recruitmentId = '';
     return candidates.map(async (id: string) => {
         const candidateInfo = await CandidateRepo.queryById(id);
         if (!candidateInfo) {
             return new Error("Candidate doesn't exist!");
         }
         const { name, title, group, interviews, phone } = candidateInfo;
-        let hash = '';
+        // let hash = '';
         try {
             if (type === 'accept') {
                 //TODO: 废弃formid的设定
-                if (!recruitmentId) {
-                    // 仅执行一次，用于生成含有recruitment id的formId
-                    // 以后所有的candidates都可以复用这个formId
-                    const recruitment = (await RecruitmentRepo.query({ title }))[0];
-                    if (recruitment.end < Date.now()) {
-                        return new Error('This recruitment has already ended!');
-                    }
-                    if (nextStep === 2) {
-                        // 组面
-                        const data = recruitment.groups.find((groupData) => groupData.name === group);
-                        if (!data) {
-                            return new Error("Group doesn't exist!");
-                        }
-                        if (!data.interview.length) {
-                            return new Error('Please set group interview time first!');
-                        }
-                    } else if (nextStep === 4) {
-                        // 群面
-                        if (!recruitment.interview.length) {
-                            return new Error('Please set team interview time first!');
-                        }
-                    }
-                    recruitmentId = `${recruitment._id}`;
+                // if (!recruitmentId) {
+                // 仅执行一次，用于生成含有recruitment id的formId
+                // 以后所有的candidates都可以复用这个formId
+                const recruitment = (await RecruitmentRepo.query({ title }))[0];
+                if (recruitment.end < Date.now()) {
+                    return new Error('This recruitment has already ended!');
                 }
-                const payload = {
-                    recruitmentId,
-                    id,
-                    step: nextStep === 2 ? 'group' : 'team',
-                    group,
-                };
-                hash = md5(payload);
-                Promise.all([
-                    PayloadRepo.createAndInsert({ ...payload, hash }),
-                    redisAsync.set(`payload:${hash}`, id, 'EX', 60 * 60 * 24 * 2),
-                ]).catch((e) => {
-                    throw new Error(`Error in ${name}: ${e}`);
-                });
+                if (nextStep === 2) {
+                    // 组面
+                    const data = recruitment.groups.find((groupData) => groupData.name === group);
+                    if (!data) {
+                        return new Error("Group doesn't exist!");
+                    }
+                    if (!data.interview.length) {
+                        return new Error('Please set group interview time first!');
+                    }
+                } else if (nextStep === 4) {
+                    // 群面
+                    if (!recruitment.interview.length) {
+                        return new Error('Please set team interview time first!');
+                    }
+                }
+                // recruitmentId = `${recruitment._id}`;
+                // }
+                // const payload = {
+                //     recruitmentId,
+                //     id,
+                //     step: nextStep === 2 ? 'group' : 'team',
+                //     group,
+                // };
+                // hash = md5(payload);
+                // Promise.all([
+                //     PayloadRepo.createAndInsert({ ...payload, hash }),
+                //     redisAsync.set(`payload:${hash}`, id, 'EX', 60 * 60 * 24 * 2),
+                // ]).catch((e) => {
+                //     throw new Error(`Error in ${name}: ${e}`);
+                // });
                 setPasser(id, nextStep);
             }
             if (type === 'reject') {
                 await CandidateRepo.updateById(id, { rejected: true });
             }
-            const url = recruitmentId ? await shortenURL(`${formURL}/${hash}`) : '';
+            // const url = recruitmentId ? await shortenURL(`${formURL}/${hash}`) : '';
             let allocated;
             if (type === 'group' || type === 'team') {
                 allocated = interviews[type].allocation;
@@ -100,7 +98,6 @@ const send = (req: Request) => {
                 group,
                 rest,
                 nextStep,
-                url,
                 time: type === 'accept' ? time : allocated && dateTranslator(allocated),
                 place,
             });

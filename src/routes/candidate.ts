@@ -12,11 +12,7 @@ import {
     allocateOneVerify,
     getCandidates,
     getCandidateVerify,
-    getForm,
-    getFormVerify,
     getResume,
-    newGetForm,
-    newGetFormVerify,
     newSetCandidate,
     newSetCandidateVerify,
     setCandidate,
@@ -49,17 +45,7 @@ router.get('/time', authenticator('candidate'), getTimeSelection);
 
 router.post('/time', authenticator('candidate'), setTimeSelectionVerify, setTimeSelection);
 
-// generate form
-router.get('/:cid/form/:formId', getFormVerify, getForm);
-
-router.get('/form/:hash', newGetFormVerify, newGetForm);
-
 router.use(authenticator('user'));
-
-// set candidates data
-router.put('/:cid/form/:formId', setCandidateVerify, setCandidate);
-
-router.put('/form/:hash', newSetCandidateVerify, newSetCandidate);
 
 // allocate one
 router.put('/:cid/interview/:type', allocateOneVerify, allocateOne);

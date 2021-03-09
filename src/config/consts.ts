@@ -50,6 +50,8 @@ export const ID_TO_GROUP = {
 };
 export const secret = SECRET!;
 
+export const CANDIDATE_EDIT_INTERVAL = 1000 * 60 * 60 * 12; //Half of Day
+
 export const Acm = {
     endpoint: 'acm.aliyun.com',
     dataId: ACM_DATAID!,

@@ -13,7 +13,7 @@ interface Model {
     url: string;
 }
 
-export const generateSMS = ({ name, title, step, type, group, time, place, rest, url, nextStep }: Model) => {
+export const generateSMS = ({ name, title, step, type, group, time, place, rest, nextStep }: Model) => {
     const suffix = ' (请勿回复本短信)';
     if (!name) throw new Error('Name not provided!');
     switch (type) {
@@ -24,8 +24,7 @@ export const generateSMS = ({ name, title, step, type, group, time, place, rest,
             switch (nextStep) {
                 case 2:
                 case 4:
-                    if (!url) throw new Error('URL not provided!');
-                    defaultRest = `，请进入以下链接选择面试时间：${url}`;
+                    defaultRest = `，请进入选手dashboard系统选择面试时间`;
                     break;
                 case 1:
                 case 3:

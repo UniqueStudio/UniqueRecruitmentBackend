@@ -6,16 +6,15 @@ import { GROUPS_, GROUP_INTERVIEW_STEP, TEAM_INTERVIEW_STEP } from '@config/cons
 export const getTimeSelection: RequestHandler = async (req, res, next) => {
     try {
         const pending = await RecruitmentRepo.query({ stop: { $gt: Date.now() }, begin: { $lt: Date.now() } });
-        const phone = res.locals.phone;
         if (pending.length === 0) {
             return next(errorRes('Recruitment has been ended!', 'warning'));
         }
-        const title = pending[0].title;
-        const candidate = await CandidateRepo.query({ title, phone });
-        if (candidate.length === 0) {
+        const { id } = res.locals;
+        const candidate = await CandidateRepo.queryById(id);
+        if (!candidate) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const { step, group: groupName, groupInterview, teamInterview } = candidate[0];
+        const { step, group: groupName, groupInterview, teamInterview } = candidate;
         if (step === GROUP_INTERVIEW_STEP) {
             if (groupInterview === false) {
                 return next(errorRes("Candidate doesn't enter interview process", 'error'));

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
 import { errorRes } from '@utils/errorRes';
 import { generateJWT } from '@utils/generateJWT';
-import { CandidateRepo } from '@database/model';
+import { CandidateRepo, RecruitmentRepo } from '@database/model';
 
 export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
     try {
@@ -11,11 +11,17 @@ export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
             return next(errorRes(errors.array({ onlyFirstError: true })[0]['msg'], 'warning'));
         }
         const { phone } = req.body;
-        const candidate = (await CandidateRepo.query({ phone }))[0];
+        const pending = await RecruitmentRepo.query({ stop: { $gt: Date.now() }, begin: { $lt: Date.now() } });
+        if (pending.length === 0) {
+            return next(errorRes('Recruitment has been ended!', 'warning'));
+        }
+        const title = pending[0].title;
+        const candidate = (await CandidateRepo.query({ phone, title }))[0];
         if (!candidate) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const token = generateJWT({ id: candidate.phone }, 604800);
+        const id = candidate._id;
+        const token = generateJWT({ id }, 604800);
         res.json({ token, type: 'success' });
     } catch (error) {
         return next(error);

@@ -1,7 +1,6 @@
 export { addCandidate, addCandidateVerify } from './addCandidate';
 export { onAddComment } from './addComment';
 export { getCandidates, getCandidateVerify } from './getCandidates';
-export { getForm, getFormVerify } from './getForm';
 export { getResume } from './getResume';
 export { onMoveCandidate } from './moveCandidate';
 export { onRemoveCandidate } from './removeCandidate';

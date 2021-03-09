@@ -12,18 +12,12 @@ export const setTimeSelection: RequestHandler = async (req, res, next) => {
         if (!errors.isEmpty()) {
             return next(errorRes(errors.array({ onlyFirstError: true })[0]['msg'], 'warning'));
         }
-        const phone = res.locals.phone;
-        const pending = await RecruitmentRepo.query({ stop: { $gt: Date.now() }, begin: { $lt: Date.now() } });
-        if (pending.length === 0) {
-            return next(errorRes('Recruitment has been ended!', 'warning'));
-        }
-        const title = pending[0].title;
+        const { id } = res.locals;
         const { teamInterview, groupInterview, abandon } = req.body;
-        const candidateArray = await CandidateRepo.query({ title, phone });
-        if (candidateArray.length === 0) {
+        const candidate = await CandidateRepo.queryById(id);
+        if (!candidate) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
-        const candidate = candidateArray[0];
         const { interviews, rejected, step } = candidate;
         if (candidate.abandon) {
             return next(errorRes('You have already abandoned!', 'warning'));

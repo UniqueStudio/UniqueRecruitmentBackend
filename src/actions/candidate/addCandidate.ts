@@ -64,7 +64,7 @@ export const addCandidate: RequestHandler = async (req, res, next) => {
                 total: await CandidateRepo.count({ title }),
             }
         );
-        const token = generateJWT({ id: info.phone }, 604800);
+        const token = generateJWT({ id: info._id }, 604800);
         res.json({ type: 'success', token });
         io.emit('addCandidate', { candidate: info });
         io.emit('updateRecruitment');

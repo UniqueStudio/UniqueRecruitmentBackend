@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { io } from '../../app';
 
-import { GENDERS, GRADES, GROUPS_, RANKS } from '@config/consts';
+import { CANDIDATE_EDIT_INTERVAL, GENDERS, GRADES, GROUPS_, RANKS } from '@config/consts';
 import { CandidateRepo, RecruitmentRepo } from '@database/model';
 import { copyFile } from '@utils/copyFile';
 import { errorRes } from '@utils/errorRes';
@@ -14,6 +14,7 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
         if (!errors.isEmpty()) {
             return next(errorRes(errors.array({ onlyFirstError: true })[0]['msg'], 'warning'));
         }
+        const { id } = res.locals;
         const {
             name,
             grade,
@@ -35,25 +36,27 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             filepath = path.join('./data/resumes', title, group);
             filepath = await copyFile(oldPath, filepath, `${name} - ${filename}`);
         }
-        const candidate = await CandidateRepo.query({ title, phone });
-        if (candidate.length === 0) {
-            next(errorRes("Phone Number hasn't signup", 'warning'));
+        const candidate = await CandidateRepo.queryById(id);
+        if (!candidate) {
+            return next(errorRes("Phone number hasn't signup", 'warning'));
         }
-        const preGroup = candidate[0].group;
-        const info = await CandidateRepo.update(
-            { phone },
-            {
-                grade,
-                institute,
-                major,
-                rank,
-                mail,
-                gender,
-                intro,
-                isQuick,
-                referrer,
-            }
-        );
+        const { lastEdit } = candidate;
+        if (Date.now() - lastEdit < CANDIDATE_EDIT_INTERVAL) {
+            return next(errorRes('Too frequent editing', 'warning'));
+        }
+        const preGroup = candidate.group;
+        const info = await CandidateRepo.updateById(id, {
+            grade,
+            institute,
+            major,
+            rank,
+            mail,
+            gender,
+            intro,
+            isQuick,
+            referrer,
+            lastEdit: Date.now(),
+        });
         const updateGroupCount = async (groupName: string) => {
             await RecruitmentRepo.update(
                 { title, 'groups.name': groupName },
@@ -67,7 +70,6 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
         await updateGroupCount(preGroup);
         await updateGroupCount(group);
         res.json({ type: 'success' });
-        //TODO: ADD timestamp
         io.emit('updateCandidate', { candidate: info });
         io.emit('updateRecruitment');
     } catch (err) {

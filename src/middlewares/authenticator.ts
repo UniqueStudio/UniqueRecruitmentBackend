@@ -14,7 +14,7 @@ export const authenticator = (type: 'user' | 'candidate'): RequestHandler => (re
         if (type === 'user') {
             res.locals.id = verifyJWT(jwt);
         } else {
-            res.locals.phone = verifyJWT(jwt);
+            res.locals.id = verifyJWT(jwt);
         }
         next();
     } catch (e) {

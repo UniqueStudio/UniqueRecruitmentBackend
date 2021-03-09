@@ -4,40 +4,34 @@ import { errorRes } from '@utils/errorRes';
 
 export const getCandidate: RequestHandler = async (req, res, next) => {
     try {
-        const pending = await RecruitmentRepo.query({ stop: { $gt: Date.now() }, begin: { $lt: Date.now() } });
-        const phone = res.locals.phone;
-        if (pending.length === 0) {
-            return next(errorRes('Recruitment has been ended!', 'warning'));
-        }
-        const title = pending[0].title;
-        const candidate = await CandidateRepo.query({ title, phone });
-        if (candidate.length === 0) {
+        const { id } = res.locals;
+        const candidate = await CandidateRepo.queryById(id);
+        if (!candidate) {
             return next(errorRes("Candidate doesn't exist!", 'warning'));
         }
         res.json({
-            data: candidate.map((item) => {
-                return {
-                    abandon: item.abandon,
-                    rejected: item.rejected,
-                    step: item.step,
-                    name: item.name,
-                    gender: item.gender,
-                    grade: item.grade,
-                    institute: item.institute,
-                    major: item.major,
-                    rank: item.rank,
-                    mail: item.mail,
-                    phone: item.phone,
-                    group: item.group,
-                    intro: item.intro,
-                    isQuick: item.isQuick,
-                    title: item.title,
-                    referrer: item.referrer,
-                    interviews: item.interviews,
-                    groupInterview: item.groupInterview,
-                    teamInterview: item.teamInterview,
-                };
-            })[0],
+            data: {
+                abandon: candidate.abandon,
+                rejected: candidate.rejected,
+                step: candidate.step,
+                name: candidate.name,
+                gender: candidate.gender,
+                grade: candidate.grade,
+                institute: candidate.institute,
+                major: candidate.major,
+                rank: candidate.rank,
+                mail: candidate.mail,
+                phone: candidate.phone,
+                group: candidate.group,
+                intro: candidate.intro,
+                isQuick: candidate.isQuick,
+                title: candidate.title,
+                referrer: candidate.referrer,
+                interviews: candidate.interviews,
+                groupInterview: candidate.groupInterview,
+                teamInterview: candidate.teamInterview,
+                lastEdit: candidate.lastEdit,
+            },
             type: 'success',
         });
     } catch (error) {

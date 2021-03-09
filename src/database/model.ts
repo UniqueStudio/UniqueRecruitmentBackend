@@ -157,6 +157,10 @@ const candidateSchema = createSchema({
         type: Boolean,
         default: false,
     },
+    lastEdit: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const CandidateModel = model<Candidate>('candidate', candidateSchema);

@@ -44,6 +44,7 @@ export interface Candidate extends Document {
     comments: Comment[];
     groupInterview: boolean;
     teamInterview: boolean;
+    lastEdit: number;
 }
 
 export interface Comment extends Document {
