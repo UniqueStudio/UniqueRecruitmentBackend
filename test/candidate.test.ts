@@ -111,15 +111,41 @@ describe('get post put /candidate', () => {
         done();
     });
     it('frequent update candidate should return false', async (done) => {
+        await initialEditTime();
+        token = await loginCandidate();
         let result = await updateCandidate('put', token);
         expect(result.type).toBe('success');
         result = await updateCandidate('put', token);
         expect(result.type).toBe('warning');
         done();
     });
-    it('user change group should affect ', async (done) => {
+    it('candidate change group should affect group statistice', async (done) => {
         await CandidateRepo.delete({ title: '2021C', phone: '13343485564' });
         await updateCandidate('post');
+        token = await loginCandidate();
+        {
+            const recruitments = await RecruitmentRepo.query({ title: '2021C' });
+            expect(recruitments.length).toBe(1);
+            const recruitment = recruitments[0];
+            const web = recruitment.groups.filter((gp) => gp.name === 'web')[0];
+            const ios = recruitment.groups.filter((gp) => gp.name === 'ios')[0];
+            expect(web.total).toBe(1);
+            expect(web.steps[0]).toBe(1);
+            expect(ios.total).toBe(0);
+            expect(ios.steps[0]).toBe(0);
+        }
+        {
+            await updateCandidate('put', token, { group: 'ios' });
+            const recruitments = await RecruitmentRepo.query({ title: '2021C' });
+            expect(recruitments.length).toBe(1);
+            const recruitment = recruitments[0];
+            const ios = recruitment.groups.filter((gp) => gp.name === 'ios')[0];
+            const web = recruitment.groups.filter((gp) => gp.name === 'web')[0];
+            expect(web.total).toBe(0);
+            expect(web.steps[0]).toBe(0);
+            expect(ios.total).toBe(1);
+            expect(ios.steps[0]).toBe(1);
+        }
         done();
     });
 });
