@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import fetch from 'node-fetch';
-import { accessTokenURL, ID_TO_GROUP, JWT_EXPIRE_TIME, scanningURL, userIDURL, userInfoURL } from '@config/consts';
-import { UserRepo } from '@database/model';
-import { errorRes } from '@utils/errorRes';
-import { generateJWT } from '@utils/generateJWT';
+import { accessTokenURL, ID_TO_GROUP, JWT_EXPIRE_TIME, scanningURL, userIDURL, userInfoURL } from '@/config/consts';
+import { UserRepo } from '@/database/model';
+import { errorRes } from '@/utils/errorRes';
+import { generateJWT } from '@/utils/generateJWT';
 
 interface Data {
     userid: string;

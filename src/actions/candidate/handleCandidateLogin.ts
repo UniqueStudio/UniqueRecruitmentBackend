@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
-import { errorRes } from '@utils/errorRes';
-import { generateJWT } from '@utils/generateJWT';
-import { CandidateRepo, RecruitmentRepo } from '@database/model';
-import { JWT_EXPIRE_TIME } from '@config/consts';
+import { errorRes } from '@/utils/errorRes';
+import { generateJWT } from '@/utils/generateJWT';
+import { CandidateRepo, RecruitmentRepo } from '@/database/model';
+import { JWT_EXPIRE_TIME } from '@/config/consts';
 
 export const handleCandidateLogin: RequestHandler = async (req, res, next) => {
     try {

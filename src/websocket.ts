@@ -3,7 +3,7 @@ import socketIO, { Server } from 'socket.io';
 import { onAddComment, onMoveCandidate, onRemoveCandidate, onRemoveComment } from './actions/candidate';
 import { messenger } from './actions/user';
 
-import { logger } from './utils/logger';
+import { logger } from '@/utils/logger';
 
 export const wsServer = <T>(server: T) => socketIO(server);
 

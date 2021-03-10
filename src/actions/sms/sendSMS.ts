@@ -2,11 +2,11 @@ import { Request, RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
 import moment from 'moment';
 import fetch from 'node-fetch';
-import { GROUP_INTERVIEW_STEP, smsAPI, TEAM_INTERVIEW_STEP, token } from '@config/consts';
-import { CandidateRepo, RecruitmentRepo } from '@database/model';
-import { errorRes } from '@utils/errorRes';
-import { generateSMS } from '@utils/generateSMS';
-import { titleConverter } from '@utils/titleConverter';
+import { GROUP_INTERVIEW_STEP, smsAPI, TEAM_INTERVIEW_STEP, token } from '@/config/consts';
+import { CandidateRepo, RecruitmentRepo } from '@/database/model';
+import { errorRes } from '@/utils/errorRes';
+import { generateSMS } from '@/utils/generateSMS';
+import { titleConverter } from '@/utils/titleConverter';
 
 const padZero = (toPad: number) => toPad.toString().padStart(2, '0');
 

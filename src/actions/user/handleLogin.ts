@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import { RequestHandler } from 'express';
 import { body, validationResult } from 'express-validator';
-import { UserRepo } from '@database/model';
-import { errorRes } from '@utils/errorRes';
-import { generateJWT } from '@utils/generateJWT';
-import { JWT_EXPIRE_TIME } from '@config/consts';
+import { UserRepo } from '@/database/model';
+import { errorRes } from '@/utils/errorRes';
+import { generateJWT } from '@/utils/generateJWT';
+import { JWT_EXPIRE_TIME } from '@/config/consts';
 
 export const handleLogin: RequestHandler = async (req, res, next) => {
     try {

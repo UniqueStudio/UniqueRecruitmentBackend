@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { errorRes } from '@utils/errorRes';
-import { verifyJWT } from '@utils/verifyJWT';
+import { errorRes } from '@/utils/errorRes';
+import { verifyJWT } from '@/utils/verifyJWT';
 
 export const authenticator = (type: 'user' | 'candidate'): RequestHandler => (req, res, next) => {
     if (req.method === 'OPTIONS') {

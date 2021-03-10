@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { authenticator } from '@mw/authenticator';
-import { codeChecker } from '@mw/codeChecker';
-import { fileHandler } from '@mw/fileHandler';
+import { authenticator } from '@/middlewares/authenticator';
+import { codeChecker } from '@/middlewares/codeChecker';
+import { fileHandler } from '@/middlewares/fileHandler';
 
 import {
     addCandidate,
@@ -21,7 +21,7 @@ import {
     getTimeSelection,
     setTimeSelection,
     setTimeSelectionVerify,
-} from '../actions/candidate';
+} from '@/actions/candidate';
 
 const router = Router();
 

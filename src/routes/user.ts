@@ -10,8 +10,8 @@ import {
     setInfoVerify,
     setAdmin,
     setAdminVerify,
-} from '../actions/user';
-import { authenticator } from '@mw/authenticator';
+} from '@/actions/user';
+import { authenticator } from '@/middlewares/authenticator';
 
 const router = Router();
 

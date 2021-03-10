@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { secret } from '@config/consts';
-import { FormPayload } from '@config/types';
+import { secret } from '@/config/consts';
+import { FormPayload } from '@/config/types';
 import { isDev } from './environment';
 
 export const extractJWT = (token?: string): FormPayload => {

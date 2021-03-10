@@ -3,12 +3,12 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 
-import { jsonParser, urlencodedParser } from './middlewares/bodyParser';
-import { cors } from './middlewares/cors';
-import { errorHandler } from './middlewares/errorHandler';
-import { infoLogger } from './middlewares/infoLogger';
-import { routes } from './routes';
-import { isDev } from './utils/environment';
+import { jsonParser, urlencodedParser } from '@/middlewares/bodyParser';
+import { cors } from '@/middlewares/cors';
+import { errorHandler } from '@/middlewares/errorHandler';
+import { infoLogger } from '@/middlewares/infoLogger';
+import { routes } from '@/routes';
+import { isDev } from '@/utils/environment';
 import { wsServer } from './websocket';
 
 export const app = express();

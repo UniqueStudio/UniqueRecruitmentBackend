@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import { body, param, validationResult } from 'express-validator';
 import { io } from '../../app';
-import { RecruitmentRepo, UserRepo } from '@database/model';
-import { checkInterview } from '@utils/checkInterview';
-import { errorRes } from '@utils/errorRes';
+import { RecruitmentRepo, UserRepo } from '@/database/model';
+import { checkInterview } from '@/utils/checkInterview';
+import { errorRes } from '@/utils/errorRes';
 
 export const setRecruitment: RequestHandler = async (req, res, next) => {
     try {

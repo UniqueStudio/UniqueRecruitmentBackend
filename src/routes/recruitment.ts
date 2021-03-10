@@ -9,8 +9,8 @@ import {
     setRecruitmentVerify,
 } from '../actions/recruitment';
 
-import { authenticator } from '@mw/authenticator';
-import { codeChecker } from '@mw/codeChecker';
+import { authenticator } from '@/middlewares/authenticator';
+import { codeChecker } from '@/middlewares/codeChecker';
 
 const router = Router();
 

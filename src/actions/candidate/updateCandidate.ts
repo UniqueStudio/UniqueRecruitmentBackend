@@ -3,10 +3,10 @@ import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { io } from '../../app';
 
-import { CANDIDATE_EDIT_INTERVAL, GENDERS, GRADES, GROUPS_, RANKS } from '@config/consts';
-import { CandidateRepo, RecruitmentRepo } from '@database/model';
-import { copyFile } from '@utils/copyFile';
-import { errorRes } from '@utils/errorRes';
+import { CANDIDATE_EDIT_INTERVAL, GENDERS, GRADES, GROUPS_, RANKS } from '@/config/consts';
+import { CandidateRepo, RecruitmentRepo } from '@/database/model';
+import { copyFile } from '@/utils/copyFile';
+import { errorRes } from '@/utils/errorRes';
 
 export const updateCandidate: RequestHandler = async (req, res, next) => {
     try {
@@ -15,29 +15,46 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             return next(errorRes(errors.array({ onlyFirstError: true })[0]['msg'], 'warning'));
         }
         const { id } = res.locals;
-        const { name, grade, institute, major, rank, mail, group, gender, intro, title, isQuick, referrer } = req.body;
+        const candidate = await CandidateRepo.queryById(id);
+        if (!candidate) {
+            return next(errorRes("Candidate hasn't signup", 'warning'));
+        }
+        const title = candidate.title;
+        const {
+            title: reqTitle,
+            name,
+            grade,
+            institute,
+            major,
+            rank,
+            mail,
+            group,
+            intro,
+            isQuick,
+            referrer,
+        } = req.body;
         let filepath = '';
+        if (reqTitle !== title) {
+            return next(errorRes('Recruitment titile is wrong', 'warning'));
+        }
         if (req.file) {
             const { originalname: filename, path: oldPath } = req.file;
             filepath = path.join('./data/resumes', title, group);
             filepath = await copyFile(oldPath, filepath, `${name} - ${filename}`);
         }
-        const candidate = await CandidateRepo.queryById(id);
-        if (!candidate) {
-            return next(errorRes("Phone number hasn't signup", 'warning'));
-        }
+
         const { lastEdit } = candidate;
         if (Date.now() - lastEdit < CANDIDATE_EDIT_INTERVAL) {
             return next(errorRes('Too frequent editing', 'warning'));
         }
         const preGroup = candidate.group;
         const info = await CandidateRepo.updateById(id, {
+            group,
             grade,
             institute,
             major,
             rank,
             mail,
-            gender,
             intro,
             isQuick,
             referrer,

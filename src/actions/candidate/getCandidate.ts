@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { CandidateRepo } from '@database/model';
-import { errorRes } from '@utils/errorRes';
+import { CandidateRepo } from '@/database/model';
+import { errorRes } from '@/utils/errorRes';
 
 export const getCandidate: RequestHandler = async (req, res, next) => {
     try {

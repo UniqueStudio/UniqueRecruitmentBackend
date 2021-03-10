@@ -3,7 +3,7 @@ import fs from 'fs';
 import mkdirp from 'mkdirp';
 import { join } from 'path';
 import { promisify } from 'util';
-import { logger } from './utils/logger';
+import { logger } from '@/utils/logger';
 
 const readdir = promisify(fs.readdir);
 const unlink = promisify(fs.unlink);

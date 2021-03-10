@@ -2,10 +2,10 @@ import crypto from 'crypto';
 
 import { io, server } from './app';
 import { loadConfig } from './config/acm';
-import { UserRepo } from './database/model';
+import { UserRepo } from '@/database/model';
 import { task } from './task';
-import { isDev } from './utils/environment';
-import { logger } from './utils/logger';
+import { isDev } from '@/utils/environment';
+import { logger } from '@/utils/logger';
 import { wsHandler } from './websocket';
 
 loadConfig().catch((e) => logger.error(e));

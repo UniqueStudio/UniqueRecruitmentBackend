@@ -3,16 +3,16 @@ import { body, validationResult } from 'express-validator';
 import path from 'path';
 import { io } from '../../app';
 
-import { GENDERS, GRADES, GROUPS_, JWT_EXPIRE_TIME, RANKS } from '@config/consts';
-import { CandidateRepo, RecruitmentRepo } from '@database/model';
-import { titleConverter } from '@utils/titleConverter';
-import { copyFile } from '@utils/copyFile';
-import { errorRes } from '@utils/errorRes';
-import { logger } from '@utils/logger';
-import sendEmail from '@utils/sendEmail';
+import { GENDERS, GRADES, GROUPS_, JWT_EXPIRE_TIME, RANKS } from '@/config/consts';
+import { CandidateRepo, RecruitmentRepo } from '@/database/model';
+import { titleConverter } from '@/utils/titleConverter';
+import { copyFile } from '@/utils/copyFile';
+import { errorRes } from '@/utils/errorRes';
+import { logger } from '@/utils/logger';
+import sendEmail from '@/utils/sendEmail';
 import { sendSMS } from './sendSMS';
-import { generateJWT } from '@utils/generateJWT';
-import { isDev } from '@utils/environment';
+import { generateJWT } from '@/utils/generateJWT';
+import { isDev } from '@/utils/environment';
 
 export const addCandidate: RequestHandler = async (req, res, next) => {
     try {

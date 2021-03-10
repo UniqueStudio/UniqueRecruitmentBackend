@@ -3,11 +3,7 @@
         "baseUrl": ".",
         "rootDir": ".",
         "paths": {
-            "@utils/*": ["src/utils/*"],
-            "@database/*": ["src/database/*"],
-            "@config/*": ["src/config/*"],
-            "@mw/*": ["src/middlewares/*"],
-            "@actions/*": ["src/actions/*"]
+            "@/*": ["src/*"]
         },
         "module": "commonjs",
         "outDir": "build",
