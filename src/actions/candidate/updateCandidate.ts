@@ -58,7 +58,7 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             intro,
             isQuick,
             referrer,
-            filepath,
+            resume: filepath,
             lastEdit: Date.now(),
         });
         const updateGroupCount = async (groupName: string) => {
