@@ -12,6 +12,7 @@ import { logger } from '@utils/logger';
 import sendEmail from '@utils/sendEmail';
 import { sendSMS } from './sendSMS';
 import { generateJWT } from '@utils/generateJWT';
+import { isDev } from '@utils/environment';
 
 export const addCandidate: RequestHandler = async (req, res, next) => {
     try {
@@ -68,15 +69,22 @@ export const addCandidate: RequestHandler = async (req, res, next) => {
         res.json({ type: 'success', token });
         io.emit('addCandidate', { candidate: info });
         io.emit('updateRecruitment');
-        setTimeout(() => {
-            // {1}你好，您当前状态是{2}，请关注手机短信以便获取后续通知。
-            sendSMS(phone, { template: 670908, param_list: [name, '成功提交报名表单'] }).catch((e) => logger.error(e));
-            const question = global.acmConfig[group];
-            if (!question.uri) return;
-            sendEmail({ name, address: mail }, question.uri, question.description, titleConverter(title)).catch((e) =>
-                logger.error(e)
-            );
-        }, 30 * 1000);
+        isDev() ||
+            setTimeout(() => {
+                // {1}你好，您当前状态是{2}，请关注手机短信以便获取后续通知。
+
+                sendSMS(phone, { template: 670908, param_list: [name, '成功提交报名表单'] }).catch((e) =>
+                    logger.error(e)
+                );
+                const question = global.acmConfig[group];
+                if (!question.uri) return;
+                sendEmail(
+                    { name, address: mail },
+                    question.uri,
+                    question.description,
+                    titleConverter(title)
+                ).catch((e) => logger.error(e));
+            }, 30 * 1000);
     } catch (err) {
         return next(err);
     }
