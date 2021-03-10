@@ -111,12 +111,15 @@ describe('get post put /candidate', () => {
         done();
     });
     it('frequent update candidate should return false', async (done) => {
-        token = await loginCandidate();
-        await initialEditTime();
         let result = await updateCandidate('put', token);
         expect(result.type).toBe('success');
         result = await updateCandidate('put', token);
         expect(result.type).toBe('warning');
+        done();
+    });
+    it('user change group should affect ', async (done) => {
+        await CandidateRepo.delete({ title: '2021C', phone: '13343485564' });
+        await updateCandidate('post');
         done();
     });
 });

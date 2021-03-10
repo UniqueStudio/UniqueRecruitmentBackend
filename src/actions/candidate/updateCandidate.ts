@@ -58,14 +58,15 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             intro,
             isQuick,
             referrer,
+            filepath,
             lastEdit: Date.now(),
         });
         const updateGroupCount = async (groupName: string) => {
             await RecruitmentRepo.update(
                 { title, 'groups.name': groupName },
                 {
-                    'groups.$.total': await CandidateRepo.count({ title, group }),
-                    'groups.$.steps.0': await CandidateRepo.count({ title, group, step: 0 }),
+                    'groups.$.total': await CandidateRepo.count({ title, group: groupName }),
+                    'groups.$.steps.0': await CandidateRepo.count({ title, group: groupName, step: 0 }),
                     total: await CandidateRepo.count({ title }),
                 }
             );
