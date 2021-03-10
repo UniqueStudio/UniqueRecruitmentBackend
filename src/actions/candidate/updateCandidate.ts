@@ -33,6 +33,12 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
             isQuick,
             referrer,
         } = req.body;
+        const recruitments = await RecruitmentRepo.query({ title });
+        if (recruitments.length !== 1) {
+            return next(errorRes("Current recruitment number isn't one", 'warning'));
+        }
+        const recruitment = recruitments[0];
+        const { stop: stopTime } = recruitment;
         let filepath = '';
         if (reqTitle !== title) {
             return next(errorRes('Recruitment titile is wrong', 'warning'));
@@ -46,6 +52,9 @@ export const updateCandidate: RequestHandler = async (req, res, next) => {
         const { lastEdit } = candidate;
         if (Date.now() - lastEdit < CANDIDATE_EDIT_INTERVAL) {
             return next(errorRes('Too frequent editing', 'warning'));
+        }
+        if (Date.now() > stopTime) {
+            return next(errorRes('Info cannot be changed now', 'warning'));
         }
         const preGroup = candidate.group;
         const info = await CandidateRepo.updateById(id, {

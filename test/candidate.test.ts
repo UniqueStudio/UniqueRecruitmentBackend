@@ -25,6 +25,7 @@ beforeAll(async () => {
         })
         .then((res) => {});
 });
+
 describe('post /login', () => {
     it('login by candidate should return success', async (done) => {
         request(app)
@@ -146,6 +147,19 @@ describe('get post put /candidate', () => {
             expect(ios.total).toBe(1);
             expect(ios.steps[0]).toBe(1);
         }
+        done();
+    });
+    it('candidate change  info after recruitment stop should failed', async (done) => {
+        const recruitments = await RecruitmentRepo.query({ title: '2021C' });
+        expect(recruitments.length).toBe(1);
+        await initialEditTime();
+        const recruitment = recruitments[0];
+        const origStop = recruitment.stop;
+        token = await loginCandidate();
+        await RecruitmentRepo.updateById(recruitment._id, { stop: Date.now() - 1 });
+        const res = await updateCandidate('put', token);
+        RecruitmentRepo.updateById(recruitment._id, { stop: origStop });
+        expect(res.type).toBe('warning');
         done();
     });
 });
