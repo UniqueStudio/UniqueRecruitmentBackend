@@ -5,7 +5,6 @@ export { getResume } from './getResume';
 export { onMoveCandidate } from './moveCandidate';
 export { onRemoveCandidate } from './removeCandidate';
 export { onRemoveComment } from './removeComment';
-export { setCandidate, setCandidateVerify } from './setCandidate';
 export { allocateOne, allocateOneVerify } from './allocateOne';
 export { allocateAll, allocateAllVerify } from './allocateAll';
 export { handleCandidateLogin, handleCandidateLoginVerify } from './handleCandidateLogin';
